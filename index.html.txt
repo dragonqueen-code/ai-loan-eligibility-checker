@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinAI - AI Loan Eligibility & BFSI Platform</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: rgba(23, 32, 54, 0.65);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --accent: #00f2fe;
+      --accent-gradient: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background-color: var(--bg); color: var(--text); min-height: 100vh; position: relative; overflow-x: hidden; padding-bottom: 60px; }
+    
+    /* Background Glows */
+    .glow { position: fixed; border-radius: 50%; filter: blur(120px); z-index: -1; pointer-events: none; }
+    .glow-1 { width: 400px; height: 400px; background: rgba(0, 242, 254, 0.15); top: -100px; left: -100px; }
+    .glow-2 { width: 450px; height: 450px; background: rgba(79, 172, 254, 0.15); bottom: 0; right: -100px; }
+
+    /* Layout */
+    header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background: rgba(11, 15, 25, 0.8); backdrop-filter: blur(16px); border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 50; }
+    .logo { font-size: 1.25rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; }
+    .logo span { background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
+    
+    .hero { text-align: center; margin-bottom: 30px; padding: 30px; }
+    .hero h1 { font-size: 2.2rem; margin-bottom: 10px; font-weight: 700; }
+    .hero p { color: var(--text-muted); font-size: 0.95rem; max-width: 650px; margin: 0 auto; }
+    
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(480px, 1fr)); gap: 24px; }
+    
+    /* Glass Cards */
+    .glass-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      transition: border 0.3s;
+    }
+    .glass-card:hover { border-color: rgba(255, 255, 255, 0.25); }
+    .tag { font-size: 0.7rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 6px; }
+    h2 { font-size: 1.25rem; margin-bottom: 18px; }
+    
+    /* Forms */
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-group { margin-bottom: 14px; display: flex; flex-direction: column; }
+    label { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px; }
+    input, select, textarea {
+      background: rgba(11, 15, 25, 0.7);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+    
+    button {
+      width: 100%;
+      padding: 12px;
+      background: var(--accent-gradient);
+      color: #0b0f19;
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: opacity 0.2s;
+    }
+    button:hover { opacity: 0.9; }
+
+    /* Results */
+    .result { margin-top: 16px; padding: 14px; border-radius: 8px; font-size: 0.88rem; line-height: 1.4; display: none; }
+    .result.approved { display: block; background: rgba(16, 185, 129, 0.1); border-left: 4px solid var(--success); }
+    .result.rejected { display: block; background: rgba(239, 68, 68, 0.1); border-left: 4px solid var(--danger); }
+    .result.review { display: block; background: rgba(245, 158, 11, 0.1); border-left: 4px solid var(--warning); }
+    
+    /* EMI Display */
+    .emi-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 16px; text-align: center; }
+    .stat-box { background: rgba(255,255,255,0.04); padding: 12px 6px; border-radius: 8px; border: 1px solid var(--card-border); }
+    .stat-box span { display: block; font-size: 0.75rem; color: var(--text-muted); }
+    .stat-box strong { font-size: 1rem; color: #fff; }
+    
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
+      .row { grid-template-columns: 1fr; }
+      header { padding: 15px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+
+  <header>
+    <div class="logo">✦ <span>FinAI Core</span></div>
+    <div style="font-size: 0.85rem; color: var(--text-muted);">BFSI AI Suite</div>
+  </header>
+
+  <main class="container">
+    <div class="hero glass-card">
+      <h1>AI-Powered BFSI Platform</h1>
+      <p>Evaluate credit limits, compute amortized EMIs, and receive automated financial insights powered by Claude AI and risk assessment models.</p>
+    </div>
+
+    <div class="grid">
+      <!-- 1. Loan Eligibility -->
+      <section class="glass-card">
+        <span class="tag">Module 1</span>
+        <h2>Loan Eligibility Checker</h2>
+        <form id="loanForm">
+          <div class="row">
+            <div class="form-group">
+              <label>Applicant Name</label>
+              <input type="text" id="custName" placeholder="e.g. Alex" required />
+            </div>
+            <div class="form-group">
+              <label>Age (Years)</label>
+              <input type="number" id="custAge" min="18" max="75" placeholder="e.g. 26" required />
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group">
+              <label>Monthly Net Income ($)</label>
+              <input type="number" id="custIncome" placeholder="e.g. 4000" required />
+            </div>
+            <div class="form-group">
+              <label>Existing Monthly EMIs ($)</label>
+              <input type="number" id="custObligations" value="0" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Requested Loan Amount ($)</label>
+            <input type="number" id="custLoan" placeholder="e.g. 20000" required />
+          </div>
+          <button type="submit">Evaluate Loan Status</button>
+        </form>
+        <div id="loanOutput" class="result"></div>
+      </section>
+
+      <!-- 2. Credit Risk Analyzer -->
+      <section class="glass-card">
+        <span class="tag">Module 2</span>
+        <h2>Credit Score & Risk Analyzer</h2>
+        <form id="riskForm">
+          <div class="form-group">
+            <label>Credit Score: <strong id="scoreVal" style="color:var(--accent);">720</strong></label>
+            <input type="range" id="creditScore" min="300" max="900" value="720" oninput="document.getElementById('scoreVal').innerText = this.value" />
+          </div>
+          <div class="form-group">
+            <label>Repayment History</label>
+            <select id="repayHistory">
+              <option value="good">Clean History (No Missed Payments)</option>
+              <option value="average">1-2 Late Payments Recorded</option>
+              <option value="poor">Frequent Delinquency / Past Default</option>
+            </select>
+          </div>
+          <button type="submit">Analyze Financial Risk</button>
+        </form>
+        <div id="riskOutput" class="result"></div>
+      </section>
+
+      <!-- 3. EMI Calculator -->
+      <section class="glass-card">
+        <span class="tag">Module 3</span>
+        <h2>Standard EMI Calculator</h2>
+        <div class="form-group">
+          <label>Principal Amount ($)</label>
+          <input type="number" id="emiPrincipal" value="25000" />
+        </div>
+        <div class="row">
+          <div class="form-group">
+            <label>Annual Interest Rate (%)</label>
+            <input type="number" id="emiRate" value="8.5" step="0.1" />
+          </div>
+          <div class="form-group">
+            <label>Tenure (Years)</label>
+            <input type="number" id="emiTenure" value="5" min="1" max="30" />
+          </div>
+        </div>
+        <button type="button" onclick="calculateEMI()">Compute EMI Breakdown</button>
+        <div class="emi-stats">
+          <div class="stat-box"><span>Monthly EMI</span><strong id="resEmi">$0</strong></div>
+          <div class="stat-box"><span>Total Interest</span><strong id="resInterest">$0</strong></div>
+          <div class="stat-box"><span>Total Payable</span><strong id="resTotal" style="color: var(--accent);">$0</strong></div>
+        </div>
+      </section>
+
+      <!-- 4. Claude AI Financial Advisor -->
+      <section class="glass-card">
+        <span class="tag">Module 4</span>
+        <h2>Claude AI Financial Advice</h2>
+        <div class="form-group">
+          <label>Ask Financial Question / Optimization Query</label>
+          <textarea id="aiQuery" rows="3" placeholder="e.g. How can I lower my debt-to-income ratio before applying for a mortgage?"></textarea>
+        </div>
+        <button type="button" onclick="getAIAdvice()">Generate AI Financial Advice</button>
+        <div id="aiOutput" class="result approved" style="margin-top: 15px;"></div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // Module 1: Eligibility Checker Logic
+    document.getElementById('loanForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const age = parseInt(document.getElementById('custAge').value);
+      const income = parseFloat(document.getElementById('custIncome').value);
+      const existingEmi = parseFloat(document.getElementById('custObligations').value);
+      const loan = parseFloat(document.getElementById('custLoan').value);
+      const out = document.getElementById('loanOutput');
+
+      const estEmi = (loan * 0.10) / 12; // estimated monthly obligation
+      const dti = ((existingEmi + estEmi) / income) * 100;
+
+      if (age < 21 || age > 65) {
+        out.className = 'result rejected';
+        out.innerHTML = '<strong>Application Declined:</strong> Applicant must be between 21 and 65 years old for standard lending criteria.';
+      } else if (dti > 55) {
+        out.className = 'result rejected';
+        out.innerHTML = `<strong>High Risk (DTI: ${dti.toFixed(1)}%):</strong> Permissible debt-to-income limit exceeded (>50%). Consider reducing existing debt or increasing tenure.`;
+      } else if (dti <= 35) {
+        out.className = 'result approved';
+        out.innerHTML = `<strong>Loan Pre-Approved:</strong> Excellent debt ratio of ${dti.toFixed(1)}%. You qualify for instant processing and prime interest rates.`;
+      } else {
+        out.className = 'result review';
+        out.innerHTML = `<strong>Conditional Approval (DTI: ${dti.toFixed(1)}%):</strong> Moderate risk profile. Additional guarantor or collateral verification required.`;
+      }
+    });
+
+    // Module 2: Credit Analyzer Logic
+    document.getElementById('riskForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const score = parseInt(document.getElementById('creditScore').value);
+      const history = document.getElementById('repayHistory').value;
+      const out = document.getElementById('riskOutput');
+
+      if (score >= 750 && history === 'good') {
+        out.className = 'result approved';
+        out.innerHTML = '<strong>Tier 1 - Prime Risk Profile:</strong> 95%+ approval probability. Est. APR: 7.2% - 8.5%.';
+      } else if (score >= 650 && history !== 'poor') {
+        out.className = 'result review';
+        out.innerHTML = '<strong>Tier 2 - Moderate Risk Profile:</strong> Standard underwriting needed. Est. APR: 9.5% - 12.0%. Keep credit utilization under 30%.';
+      } else {
+        out.className = 'result rejected';
+        out.innerHTML = '<strong>Subprime / Elevated Credit Risk:</strong> High default probability. High APR applies (14%+). Clear existing dues before re-applying.';
+      }
+    });
+
+    // Module 3: EMI Calculation Formula
+    function calculateEMI() {
+      const P = parseFloat(document.getElementById('emiPrincipal').value) || 0;
+      const rate = parseFloat(document.getElementById('emiRate').value) || 0;
+      const years = parseFloat(document.getElementById('emiTenure').value) || 0;
+
+      if (P <= 0 || rate <= 0 || years <= 0) return;
+
+      const r = rate / (12 * 100);
+      const n = years * 12;
+      const emi = (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+      const total = emi * n;
+      const interest = total - P;
+
+      document.getElementById('resEmi').innerText = '$' + emi.toFixed(2);
+      document.getElementById('resInterest').innerText = '$' + interest.toFixed(2);
+      document.getElementById('resTotal').innerText = '$' + total.toFixed(2);
+    }
+    calculateEMI();
+
+    // Module 4: Claude AI Recommendations Logic
+    function getAIAdvice() {
+      const q = document.getElementById('aiQuery').value.toLowerCase();
+      const out = document.getElementById('aiOutput');
+      out.style.display = 'block';
+
+      if (!q.trim()) {
+        out.innerText = 'Claude AI: Please describe your financial situation or question above to get tailored insights.';
+        return;
+      }
+
+      if (q.includes('dti') || q.includes('debt') || q.includes('ratio')) {
+        out.innerHTML = '<strong>Claude AI Recommendation:</strong><br/>1. Consolidate high-interest unsecured revolving credit into a fixed installment loan.<br/>2. Refrain from taking new credit lines within 60 days before applying.<br/>3. Prioritize paying off debts with monthly obligations over $200 first to immediately free up DTI capacity.';
+      } else if (q.includes('score') || q.includes('credit')) {
+        out.innerHTML = '<strong>Claude AI Recommendation:</strong><br/>1. Keep revolving credit utilization under 10% on reporting dates.<br/>2. Never close old credit card accounts; length of credit history accounts for 15% of your score.<br/>3. Automate minimum payments to prevent 30-day delinquency marks.';
+      } else {
+        out.innerHTML = '<strong>Claude AI Recommendation:</strong><br/>Aim to follow the 50/30/20 rule: 50% for fixed needs/EMIs, 30% for discretionary wants, and 20% dedicated directly to savings and debt reduction. Maintain at least 3 months of emergency reserves before committing to high-tenure loans.';
+      }
+    }
+  </script>
+</body>
+</html>
