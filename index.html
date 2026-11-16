@@ -1,122 +1,280 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FinAI - AI Loan Eligibility & BFSI Platform</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="description"
+    content="Educational loan estimate, credit score guidance, EMI calculator, and general financial tips."
+  >
+  <title>FinAI - Loan Eligibility and Financial Tools</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <div class="glow glow-1"></div>
   <div class="glow glow-2"></div>
 
   <header>
     <div class="logo">✦ <span>FinAI Core</span></div>
-    <div style="font-size: 0.85rem; color: var(--text-muted);">BFSI AI Suite</div>
+    <div class="header-label">BFSI Financial Tools</div>
   </header>
 
   <main class="container">
-    <div class="hero glass-card">
-      <h1>AI-Powered BFSI Platform</h1>
-      <p>Evaluate credit limits, compute amortized EMIs, and receive automated financial insights powered by Claude AI and risk assessment models.</p>
-    </div>
+    <section class="hero glass-card">
+      <h1>Loan Eligibility and Financial Tools</h1>
+      <p>
+        Estimate a loan EMI and debt-to-income ratio, explore general credit
+        guidance, and calculate repayment costs. Results are educational
+        estimates only. They are not loan approvals or professional financial
+        advice.
+      </p>
+    </section>
 
     <div class="grid">
-      <!-- 1. Loan Eligibility -->
+      <!-- Module 1: Loan Eligibility Estimate -->
       <section class="glass-card">
         <span class="tag">Module 1</span>
-        <h2>Loan Eligibility Checker</h2>
+        <h2>Loan Eligibility Estimate</h2>
+
         <form id="loanForm">
           <div class="row">
             <div class="form-group">
               <label for="custName">Applicant Name</label>
-              <input type="text" id="custName" placeholder="e.g. Alex" required />
+              <input
+                type="text"
+                id="custName"
+                placeholder="e.g. Alex"
+                autocomplete="name"
+                required
+              >
             </div>
+
             <div class="form-group">
               <label for="custAge">Age (Years)</label>
-              <input type="number" id="custAge" min="18" max="75" placeholder="e.g. 26" required />
+              <input
+                type="number"
+                id="custAge"
+                min="18"
+                max="75"
+                placeholder="e.g. 26"
+                required
+              >
             </div>
           </div>
+
           <div class="row">
             <div class="form-group">
-              <label for="custIncome">Monthly Net Income ($)</label>
-              <input type="number" id="custIncome" min="1" placeholder="e.g. 4000" required />
+              <label for="custIncome">Monthly Net Income (₹)</label>
+              <input
+                type="number"
+                id="custIncome"
+                min="1"
+                step="100"
+                placeholder="e.g. 50000"
+                required
+              >
             </div>
+
             <div class="form-group">
-              <label for="custObligations">Existing Monthly EMIs ($)</label>
-              <input type="number" id="custObligations" min="0" value="0" required />
+              <label for="custObligations">Existing Monthly EMIs (₹)</label>
+              <input
+                type="number"
+                id="custObligations"
+                min="0"
+                step="100"
+                value="0"
+                required
+              >
             </div>
           </div>
+
           <div class="form-group">
-            <label for="custLoan">Requested Loan Amount ($)</label>
-            <input type="number" id="custLoan" min="100" placeholder="e.g. 20000" required />
+            <label for="custLoan">Requested Loan Amount (₹)</label>
+            <input
+              type="number"
+              id="custLoan"
+              min="1"
+              step="1000"
+              placeholder="e.g. 500000"
+              required
+            >
           </div>
-          <button type="submit">Evaluate Loan Status</button>
+
+          <div class="row">
+            <div class="form-group">
+              <label for="custRate">Annual Interest Rate (%)</label>
+              <input
+                type="number"
+                id="custRate"
+                min="0.1"
+                step="0.1"
+                value="9"
+                required
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="custTenure">Loan Tenure (Years)</label>
+              <input
+                type="number"
+                id="custTenure"
+                min="1"
+                max="30"
+                value="5"
+                required
+              >
+            </div>
+          </div>
+
+          <button type="submit">Calculate Estimate</button>
         </form>
-        <div id="loanOutput" class="result"></div>
+
+        <div
+          id="loanOutput"
+          class="result"
+          role="status"
+          aria-live="polite"
+        ></div>
       </section>
 
-      <!-- 2. Credit Risk Analyzer -->
+      <!-- Module 2: Credit Score Guidance -->
       <section class="glass-card">
         <span class="tag">Module 2</span>
-        <h2>Credit Score & Risk Analyzer</h2>
+        <h2>Credit Score Guide</h2>
+
         <form id="riskForm">
           <div class="form-group">
-            <label for="creditScore">Credit Score: <strong id="scoreVal" style="color:var(--accent);">720</strong></label>
-            <input type="range" id="creditScore" min="300" max="900" value="720" />
+            <label for="creditScore">
+              Credit Score:
+              <strong id="scoreVal" style="color: var(--accent);">720</strong>
+            </label>
+            <input
+              type="range"
+              id="creditScore"
+              min="300"
+              max="900"
+              value="720"
+            >
           </div>
+
           <div class="form-group">
             <label for="repayHistory">Repayment History</label>
             <select id="repayHistory">
-              <option value="good">Clean History (No Missed Payments)</option>
-              <option value="average">1-2 Late Payments Recorded</option>
-              <option value="poor">Frequent Delinquency / Past Default</option>
+              <option value="good">No missed payments</option>
+              <option value="average">One or two late payments</option>
+              <option value="poor">Frequent late payments or past default</option>
             </select>
           </div>
-          <button type="submit">Analyze Financial Risk</button>
+
+          <button type="submit">View General Guidance</button>
         </form>
-        <div id="riskOutput" class="result"></div>
+
+        <div
+          id="riskOutput"
+          class="result"
+          role="status"
+          aria-live="polite"
+        ></div>
       </section>
 
-      <!-- 3. EMI Calculator -->
+      <!-- Module 3: EMI Calculator -->
       <section class="glass-card">
         <span class="tag">Module 3</span>
-        <h2>Standard EMI Calculator</h2>
+        <h2>EMI Calculator</h2>
+
         <form id="emiForm">
           <div class="form-group">
-            <label for="emiPrincipal">Principal Amount ($)</label>
-            <input type="number" id="emiPrincipal" min="100" value="25000" required />
+            <label for="emiPrincipal">Loan Amount (₹)</label>
+            <input
+              type="number"
+              id="emiPrincipal"
+              min="1"
+              step="1000"
+              value="500000"
+              required
+            >
           </div>
+
           <div class="row">
             <div class="form-group">
               <label for="emiRate">Annual Interest Rate (%)</label>
-              <input type="number" id="emiRate" min="0.1" step="0.1" value="8.5" required />
+              <input
+                type="number"
+                id="emiRate"
+                min="0.1"
+                step="0.1"
+                value="8.5"
+                required
+              >
             </div>
+
             <div class="form-group">
               <label for="emiTenure">Tenure (Years)</label>
-              <input type="number" id="emiTenure" min="1" max="30" value="5" required />
+              <input
+                type="number"
+                id="emiTenure"
+                min="1"
+                max="30"
+                value="5"
+                required
+              >
             </div>
           </div>
-          <button type="button" id="btnCalculateEmi">Compute EMI Breakdown</button>
+
+          <button type="button" id="btnCalculateEmi">Calculate EMI</button>
         </form>
+
         <div class="emi-stats">
-          <div class="stat-box"><span>Monthly EMI</span><strong id="resEmi">$0</strong></div>
-          <div class="stat-box"><span>Total Interest</span><strong id="resInterest">$0</strong></div>
-          <div class="stat-box"><span>Total Payable</span><strong id="resTotal" style="color: var(--accent);">$0</strong></div>
+          <div class="stat-box">
+            <span>Monthly EMI</span>
+            <strong id="resEmi">₹0</strong>
+          </div>
+
+          <div class="stat-box">
+            <span>Total Interest</span>
+            <strong id="resInterest">₹0</strong>
+          </div>
+
+          <div class="stat-box">
+            <span>Total Payable</span>
+            <strong id="resTotal" style="color: var(--accent);">₹0</strong>
+          </div>
         </div>
       </section>
 
-      <!-- 4. Claude AI Financial Advisor -->
+      <!-- Module 4: Preset General Financial Tips -->
       <section class="glass-card">
         <span class="tag">Module 4</span>
-        <h2>Claude AI Financial Advice</h2>
+        <h2>General Financial Tips</h2>
+
         <div class="form-group">
-          <label for="aiQuery">Ask Financial Question / Optimization Query</label>
-          <textarea id="aiQuery" rows="3" placeholder="e.g. How can I lower my debt-to-income ratio before applying for a mortgage?"></textarea>
+          <label for="aiQuery">Your Financial Question</label>
+          <textarea
+            id="aiQuery"
+            rows="3"
+            placeholder="e.g. How can I manage my monthly debt payments?"
+          ></textarea>
         </div>
-        <button type="button" id="btnGetAiAdvice">Generate AI Financial Advice</button>
-        <div id="aiOutput" class="result approved" style="margin-top: 15px;"></div>
+
+        <button type="button" id="btnGetAiAdvice">Show General Tips</button>
+
+        <div
+          id="aiOutput"
+          class="result"
+          role="status"
+          aria-live="polite"
+          style="margin-top: 15px;"
+        ></div>
+
+        <p class="disclaimer">
+          This demo displays preset tips. It is not connected to Claude AI.
+        </p>
       </section>
     </div>
   </main>
